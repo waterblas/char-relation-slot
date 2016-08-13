@@ -1,0 +1,6 @@
+.idea/
+/out/
+/result/
+/data/
+/model/
+*.pyc
