@@ -16,7 +16,7 @@ import shutil
 
 from collections import OrderedDict
 from t2v import tweet2vec, init_params, load_params_shared
-from settings_char import NUM_EPOCHS, N_BATCH, MAX_LENGTH, SCALE, WDIM, MAX_CLASSES, LEARNING_RATE, DISPF, SAVEF, REGULARIZATION, RELOAD_MODEL, MOMENTUM, SCHEDULE
+from settings_char import NUM_EPOCHS, N_BATCH, MAX_LENGTH, SCALE, WDIM, MAX_CLASSES, LEARNING_RATE, DISPF, SAVEF, REGULARIZATION, RELOAD_MODEL, MOMENTUM, SCHEDULE, RMSPROP
 from evaluate import precision
 
 T1 = 0.01
@@ -117,8 +117,13 @@ def main(train_path,val_path,save_path,num_epochs=NUM_EPOCHS):
     # params and updates
     print("Computing updates...")
     lr = LEARNING_RATE
-    mu = MOMENTUM
-    updates = lasagne.updates.nesterov_momentum(cost, lasagne.layers.get_all_params(net), lr, momentum=mu)
+    global SCHEDULE
+    if RMSPROP:
+        SCHEDULE = False
+        updates = lasagne.updates.rmsprop(cost, lasagne.layers.get_all_params(net), learning_rate=lr)
+    else:
+        mu = MOMENTUM
+        updates = lasagne.updates.nesterov_momentum(cost, lasagne.layers.get_all_params(net), lr, momentum=mu)
 
     # Theano function
     print("Compiling theano functions...")
