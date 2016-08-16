@@ -182,6 +182,7 @@ def main(train_path,val_path,save_path,num_epochs=NUM_EPOCHS):
 
                 if np.mod(uidx, DISPF) == 0:
                     print("Epoch {} Update {} Cost {} Time {}".format(epoch,uidx,curr_cost,ud))
+                    sys.stdout.flush()
 
                 if np.mod(uidx,SAVEF) == 0:
                     print("Saving...")
