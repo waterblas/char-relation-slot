@@ -90,6 +90,7 @@ def tweet2vec(tweet,mask,params,n_chars):
     else:
         l_fdense_source = lasagne.layers.DenseLayer(l_f_source, WDIM, W=params['W_c2w_df'], b=None, nonlinearity=None)
         l_bdense_source = lasagne.layers.DenseLayer(l_b_source, WDIM, W=params['W_c2w_db'], b=None, nonlinearity=None)
+    #l_c2w_source = lasagne.layers.ConcatLayer([l_f_source, l_b_source], axis=1)
     l_c2w_source = lasagne.layers.ElemwiseSumLayer([l_fdense_source, l_bdense_source], coeffs=1)
 
     return l_c2w_source
